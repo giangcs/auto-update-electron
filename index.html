@@ -4,5 +4,22 @@
 <h1>
   hello
 </h1>
+<button onclick="senddata()">
+  Click
+</button>
 </body>
 </html>
+<!--<script src="./index.js">-->
+<!--  // const {ipcRenderer} = require('electron');-->
+
+<!--</script>-->
+<script>
+  // const {ipcRenderer} = require('electron');
+  const {ipcRenderer} = require('electron');
+  function senddata() {
+      ipcRenderer.send('data', 'Hello from index.html');
+      ipcRenderer.on('reply', (e, arg) => {
+          console.log(arg)
+      })
+  }
+</script>
