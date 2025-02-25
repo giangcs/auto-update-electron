@@ -1,0 +1,33 @@
+{
+	"name": "auto-update-electron",
+	"version": "3.0.0",
+	"description": "My test electron app",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron .",
+		"packager": "electron-builder -p always",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"build": {
+		"publish": [
+			{
+				"provider": "github",
+				"owner": "giangcs",
+				"repo": "auto-update-electron"
+			}
+		]
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"electron": "^20.0.0",
+		"electron-builder": "^25.1.8"
+	},
+	"dependencies": {
+		"electron-log": "^5.3.0",
+		"electron-updater": "^6.3.9",
+		"i": "^0.3.7",
+		"npm": "^11.1.0"
+	}
+}
