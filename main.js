@@ -1,31 +1,32 @@
-const {app, BrowserWindow, ipcMain} = require("electron");
-const path = require("path");
-const { autoUpdater } = require("electron-updater");
-let win;
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('path');
+
 function createWindow() {
-    win =  new BrowserWindow({
+    const win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
+            preload: path.join(__dirname, 'preload.js'), // Use preload.js to expose IPC safely
+            nodeIntegration: false,  // Make sure this is false
+            contextIsolation: true   // Make sure this is true for security
         }
-    })
+    });
     win.webContents.openDevTools()
-    win.loadFile(path.join(__dirname, "index.html"))
+
+    win.loadFile('index.html');
 }
 
-
-app.on("ready", () => {
-  createWindow()
+app.whenReady().then(() => {
+    createWindow();
 });
-app.on('activate', () => {
-    if(BrowserWindow.getAllWindows().length === 0){
-        createWindow()
-    }
-})
 
-ipcMain.on('hello', async (e, arg) => {
-    console.log(arg);
-    e.reply('replay', 'this is frpom server side')
-})
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
+
+ipcMain.on('data', (event, arg) => {
+    console.log(arg);  // Receives data from renderer
+    event.reply('reply', 'Hello from main process');
+});

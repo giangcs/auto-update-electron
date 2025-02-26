@@ -1,25 +1,21 @@
 <html>
-
 <body>
-<h1>
-  hello
-</h1>
-<button onclick="senddata()">
+<h1>Hello</h1>
+<button id="send-button">
   Click
 </button>
+
+<script>
+    // Now you can use the exposed API via `electron`
+    const sendButton = document.getElementById('send-button');
+
+    sendButton.addEventListener('click', () => {
+        window.electron.sendData('Hello from index.html');
+    });
+
+    window.electron.onReply((e, arg) => {
+        console.log(arg); // This should log 'Hello from main process'
+    });
+</script>
 </body>
 </html>
-<!--<script src="./index.js">-->
-<!--  // const {ipcRenderer} = require('electron');-->
-
-<!--</script>-->
-<script>
-  // const {ipcRenderer} = require('electron');
-  const {ipcRenderer} = require('electron');
-  function senddata() {
-      ipcRenderer.send('data', 'Hello from index.html');
-      ipcRenderer.on('reply', (e, arg) => {
-          console.log(arg)
-      })
-  }
-</script>
